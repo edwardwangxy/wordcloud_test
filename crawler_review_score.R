@@ -89,7 +89,8 @@ scores = sapply(strsplit(scores, split='/', fixed=TRUE), function(x) (x[1]))
 revscor = data.frame(scores, reviews)
 
 #wordcloud test
-test1 = VCorpus(VectorSource(testfnrange))
+test_pure = paste(testfnrange, collapse = ". ")
+test1 = VCorpus(VectorSource(test_pure))
 test1 = tm_map(test1, stripWhitespace)
 test1 = tm_map(test1, tolower)
 test1 = tm_map(test1, removeWords, stopwords("english"))
