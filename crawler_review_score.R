@@ -52,6 +52,21 @@ myimdb.rangereviews <- function(weburl_r, range, filter_r = "best", start = 1)
   return(first)
 }
 
+
+myimdb.wordcloud <- function()
+{
+  test_pure = paste(testfnrange, collapse = ". ")
+  test1 = VCorpus(VectorSource(test_pure))
+  test1 = tm_map(test1, stripWhitespace)
+  test1 = tm_map(test1, tolower)
+  test1 = tm_map(test1, removeWords, stopwords("english"))
+  test1 = tm_map(test1, removeWords, c("lego","movie","movi","will","film", "one", "just", "like", "can", "use","set","anim","story"))
+  test1 <- tm_map(test1, PlainTextDocument)
+  test1 <- tm_map(test1, stemDocument)
+  wordcloud(test1, scale=c(5,0.5), max.words=100, random.order=FALSE, rot.per=0.35, use.r.layout=FALSE, colors=brewer.pal(8, "Dark2"))
+  
+}
+
 #testout function
 testfn = myimdb.revscore("http://www.imdb.com/title/tt1490017/?ref_=tt_urv")
 View(testfn)
