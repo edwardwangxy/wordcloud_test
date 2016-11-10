@@ -9,19 +9,21 @@ library(XML)
 ###############################################################################
 myfunc.webcrape <- function(input_url, input_css = "//null",input_xpath = "//null", cleanup_label = c("%null"))
 {
-  if(input_css == "//null" && input_xpath == "//null")
+  if(input_css == "//null" && input_xpath == "//null") #check if no inputs for css and xpath
   {
     stop("Please input css or xpath")
     #return()
   }
-  if(input_css != "//null" && input_xpath != "//null")
+  if(input_css != "//null" && input_xpath != "//null") #check if both css and xpath are inputed
   {
     stop("Please choose between css or xpath not both")
     #return()
   }
+  
+  #web craping start
   web_url = input_url
   contents = read_html(web_url)
-  if(input_xpath != "//null")
+  if(input_xpath != "//null") #decide using xpath or css to grab information
   {
     contents = html_nodes(contents, xpath = input_xpath)
   }
@@ -29,7 +31,10 @@ myfunc.webcrape <- function(input_url, input_css = "//null",input_xpath = "//nul
   {
     contents = html_nodes(contents, input_css)
   }
-  if(cleanup_label[1] != "%null")
+  #get rid of lines including some key words user don't want. Input list of words. 
+  #For example: in trump speech webpage, after grabing the information, 
+  #there is a time section have an id="timestampe" and "timestampe" would be the key word to get rid of.
+  if(cleanup_label[1] != "%null") 
   {
     for(i in 1:length(cleanup_label))
     {
@@ -43,18 +48,17 @@ myfunc.webcrape <- function(input_url, input_css = "//null",input_xpath = "//nul
 
 myfunc.wordcloud <- function(input_words, remove_words = c("%null"))
 {
-  test_pure = paste(input_words, collapse = ". ")
-  test1 = VCorpus(VectorSource(test_pure))
-  test1 = tm_map(test1, stripWhitespace)
-  test1 = tm_map(test1, tolower)
-  test1 = tm_map(test1, removeWords, stopwords("english"))
+  pre_word = VCorpus(VectorSource(input_words))
+  pre_word = tm_map(pre_word, stripWhitespace)
+  pre_word = tm_map(pre_word, tolower)
+  pre_word = tm_map(pre_word, removeWords, stopwords("english"))
   if(remove_words[1] != "%null")
   {
-    test1 = tm_map(test1, removeWords, remove_words) 
+    pre_word = tm_map(pre_word, removeWords, remove_words) 
   }
-  test1 <- tm_map(test1, PlainTextDocument)
-  test1 <- tm_map(test1, stemDocument)
-  wordcloud(test1, scale=c(5,0.5), max.words=100, random.order=FALSE, rot.per=0.35, use.r.layout=FALSE, colors=brewer.pal(8, "Dark2"))
+  pre_word <- tm_map(pre_word, PlainTextDocument)
+  pre_word <- tm_map(pre_word, stemDocument)
+  wordcloud(pre_word, scale=c(5,0.5), max.words=100, random.order=FALSE, rot.per=0.35, use.r.layout=FALSE, colors=brewer.pal(8, "Dark2"))
 }
 ###############################################################################
 
