@@ -73,7 +73,7 @@ myfunc.wordcloud(trump_speech, remove_words=c("will"))
 
 #Hillary speech
 ###############################################################################
-hillary_url = "http://www.nytimes.com/2016/07/29/us/politics/hillary-clinton-dnc-transcript.html?_r=2"
+hillary_url = "http://www.nytimes.com/2016/07/29/us/politics/hillary-clinton-dnc-transcript.html?_r=0"
 hillary_speech = myfunc.webcrape(hillary_url, input_xpath = '//*[contains(@class, "story-body-supplemental")]//div[1]//p', cleanup_label = c("Following is a transcript"))
 myfunc.wordcloud(hillary_speech, remove_words=c("will", "'ve", "'re", "'ll"))
 ###############################################################################
